@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
     reffer_code TEXT unique
 );
 
-CREATE TABLE IF NOT EXISTS free_orders (
-    id INTEGER PRIMARY KEY,
-    timestamp INTEGER unique
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp INTEGER unique,
+    busyby INTEGER
 );
