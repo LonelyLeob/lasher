@@ -21,13 +21,13 @@ class Repos(object):
 class UserRepos(Repos):
     def create_user(self, id, name, surname, code):
         try:
-            self.cursor.execute(f"INSERT INTO users (tg_id, name, surname, reffer_code) VALUES ({id},'{name}','{surname}','{code}')")
+            self.cursor.execute(f"INSERT INTO users (tg_id, name, surname, reffer_code, reffer_quantity) VALUES ({id},'{name}','{surname}','{code}', 0)")
             self.conn.commit()
         except Exception as e:
             print(f"Вызвана ошибка {e}")
             raise e
 
-class OrderRepos(Repos):
+class ScheduleRepos(Repos):
     def do_sub(self, date, id):
         if self.cursor.execute(f"SELECT busyby from orders WHERE date = {date}")[0] == 0:
             self.cursor.execute(f"UPDATE orders SET busyby = {id} WHERE date = {date}")
@@ -36,7 +36,7 @@ class OrderRepos(Repos):
 
         return False
     
-    def get_order_list(self):
+    def get_free_order_list(self):
         return self.cursor.execute(f"SELECT * FROM orders WHERE busyby = 0")
 
     def cancel_sub(self, date, id):
@@ -50,3 +50,10 @@ class OrderRepos(Repos):
         self.cursor.execute(f"INSERT INTO orders (timestamp, busyby) VALUES ({date}, {0})")
         self.conn.commit()
         return True
+
+def user_exist(driver: sqlite3.Connection, id:int):
+    try:
+        driver.cursor().execute(f"SELECT tg_id FROM users WHERE tg_id = {id}")
+        return True
+    except Exception:
+        return False

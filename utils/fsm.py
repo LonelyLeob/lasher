@@ -1,5 +1,7 @@
-from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
-class FSMOrder(StatesGroup):
+class GuestState(StatesGroup):
+    reffer_code = State()
+
+class SchedulerState(StatesGroup):
     date = State()

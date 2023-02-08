@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from adadb import OrderRepos
+from adadb import ScheduleRepos
 
 
 
@@ -7,7 +7,7 @@ class Admin(object):
     def __init__(self, id, bot, driver):
         self.id = id
         self.bot = bot
-        self.order = OrderRepos(driver)
+        self.order = ScheduleRepos(driver)
     
     async def add_free_order(self, message: types.Message):
         self.order.add_order(1675722615)
