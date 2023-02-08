@@ -7,4 +7,4 @@ def generate_random_string(length):
     return ''.join(random.choice(letters) for i in range(length))
 
 def unix_to_normalize(date):
-    return datetime.utcfromtimestamp(date).strftime('%m-%d %H:%M')
+    return datetime.utcfromtimestamp(date).strftime('%m.%d %H:%M')

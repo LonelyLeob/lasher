@@ -39,7 +39,7 @@ class OrderRepos(Repos):
     def get_order_list(self):
         return self.cursor.execute(f"SELECT * FROM orders WHERE busyby = 0")
 
-    def delete_sub(self, date, id):
+    def cancel_sub(self, date, id):
         if self.cursor.execute(f"SELECT busyby from orders WHERE date = {date}")[0] == id:
             self.cursor.execute(f"UPDATE orders SET busyby = 0 WHERE date = {date}")
             self.conn.commit()
