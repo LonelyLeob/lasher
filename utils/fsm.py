@@ -5,3 +5,6 @@ class GuestState(StatesGroup):
 
 class SchedulerState(StatesGroup):
     date = State()
+
+class MailingState(StatesGroup):
+    mail_text = State()

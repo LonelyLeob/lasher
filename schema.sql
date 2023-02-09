@@ -11,3 +11,9 @@ CREATE TABLE IF NOT EXISTS orders (
     timestamp INTEGER unique,
     busyby INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS pricelist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    price FLOAT
+);

@@ -27,6 +27,14 @@ class UserRepos(Repos):
             print(f"Вызвана ошибка {e}")
             raise e
     
+    def get_all_users_id(self):
+        try:
+            return self.cursor.execute(f"SELECT tg_id FROM users").fetchall()
+        except Exception as e:
+            print(f"Вызвана ошибка {e}")
+            raise e
+
+    
     def profile(self, id:int):
         try:
             return self.cursor.execute(f"SELECT * FROM users WHERE tg_id = {id}").fetchone()
@@ -44,7 +52,7 @@ class ScheduleRepos(Repos):
         return False
     
     def get_free_order_list(self):
-        return self.cursor.execute(f"SELECT * FROM orders WHERE busyby = 0")
+        return self.cursor.execute(f"SELECT timestamp FROM orders WHERE busyby = 0")
 
     def cancel_sub(self, date, id):
         if self.cursor.execute(f"SELECT busyby from orders WHERE date = {date}")[0] == id:
@@ -54,9 +62,12 @@ class ScheduleRepos(Repos):
         return False
     
     def add_order(self, date):
-        self.cursor.execute(f"INSERT INTO orders (timestamp, busyby) VALUES ({date}, {0})")
-        self.conn.commit()
-        return True
+        try:
+            self.cursor.execute(f"INSERT INTO orders (timestamp, busyby) VALUES ({date}, {0})")
+            self.conn.commit()
+        except Exception as e:
+            print(f"Вызвана ошибка {e}")
+            raise e
 
 def user_exist(driver: sqlite3.Connection, id:int):
     return True if driver.cursor().execute(f"SELECT tg_id from users where tg_id = {id}").fetchone() != None else False
