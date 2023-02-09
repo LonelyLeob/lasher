@@ -26,6 +26,13 @@ class UserRepos(Repos):
         except Exception as e:
             print(f"Вызвана ошибка {e}")
             raise e
+    
+    def profile(self, id:int):
+        try:
+            return self.cursor.execute(f"SELECT * FROM users WHERE tg_id = {id}").fetchone()
+        except Exception as e:
+            print(f"Вызвана ошибка {e}")
+            raise e
 
 class ScheduleRepos(Repos):
     def do_sub(self, date, id):
@@ -52,8 +59,4 @@ class ScheduleRepos(Repos):
         return True
 
 def user_exist(driver: sqlite3.Connection, id:int):
-    try:
-        driver.cursor().execute(f"SELECT tg_id FROM users WHERE tg_id = {id}")
-        return True
-    except Exception:
-        return False
+    return True if driver.cursor().execute(f"SELECT tg_id from users where tg_id = {id}").fetchone() != None else False

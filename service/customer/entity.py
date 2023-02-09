@@ -24,7 +24,6 @@ class Client():
                 await state.finish()
                 return
             data[whoer.id] = message.text
-        await self.bot.send_message(whoer.id, f"{data[whoer.id]}", reply_markup=self.markup)
         try:
             self.user.create_user(whoer.id, whoer.first_name, whoer.last_name, code)
             await self.bot.send_message(whoer.id,f"Вы успешно зарегистрированы!\n NOTE: приглашайте друзей и получайте скидку! Подробнее об этом в вашем профиле", reply_markup=ClientMarkup().register())
@@ -40,7 +39,8 @@ class Client():
 
     async def profile(self, message: types.Message):
         whoer = message.from_user
-        await self.bot.send_message(whoer.id, f"👤 Профиль\n Ваше имя: {whoer.full_name}\nЗаписей сделано: 0\n Реферальный код: reffer_code\n Ожидающих записей: 0\nЖдем вас на реснички!;)", reply_markup=self.markup)
+        profile = self.user.profile(whoer.id)
+        await self.bot.send_message(whoer.id, f"👤Профиль\nВаше имя: {profile[1]}\nЗаписей сделано: 0\nРеферальный код: {profile[3]}\nПриглашенных друзей: {profile[4]}", reply_markup=self.markup)
 
     def register_handlers_client(self, dp:Dispatcher):
         dp.register_message_handler(self.preset_user,state=GuestState().reffer_code)

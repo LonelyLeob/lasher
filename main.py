@@ -16,12 +16,12 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 driver = FDatabase(os.getenv("DB_NAME")).migration()
 
 
-@dp.message_handler(commands=['start'], state=None)
+@dp.message_handler(commands=['start'])
 async def start(message: types.Message):
     if user_exist(driver, message.from_user.id):
         await bot.send_message(message.from_user.id, f"Вы уже зарегистрированы, выберите запись на реснички:)", reply_markup=ClientMarkup().register())
         return
-    await message.answer(f"Приветствую тебя {message.from_user.full_name}!\n Здесь ты можешь записаться ко мне на реснички:)\nВведите реферальный код, если вас пригласил друг или /cancel, если вы просто хотите быть с нами;)")
+    await message.answer(f"Приветствую тебя {message.from_user.full_name}!\nЗдесь ты можешь записаться ко мне на реснички:)\nВведите реферальный код, если вас пригласил друг или /cancel, если вы просто хотите быть с нами;)")
     await GuestState().reffer_code.set()
 
 if __name__ == '__main__':

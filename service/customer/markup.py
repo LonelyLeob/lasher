@@ -5,7 +5,8 @@ class ClientMarkup(InlineKeyboardMarkup):
     contacts = InlineKeyboardButton(text='Контакты', callback_data='contacts')
     profile = InlineKeyboardButton(text='Профиль', callback_data='profile')
     def register(self):
-        return super().add(self.schedule, self.contacts, self.profile)
+        self.row_width=3
+        return self.add(self.schedule, self.contacts, self.profile)
 
 class ContactsMarkup(InlineKeyboardMarkup):
     telegram_link = InlineKeyboardButton(text='Мой телеграмм', url="google.com")
