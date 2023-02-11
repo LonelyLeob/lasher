@@ -1,3 +1,4 @@
 from aiogram.utils.callback_data import CallbackData
 
-schedule = CallbackData('post','date', sep="-")
+schedule = CallbackData('sub','date', sep="-")
+agreement = CallbackData('agree', 'answer', 'id', 'date', sep='-')

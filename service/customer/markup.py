@@ -24,4 +24,5 @@ class ScheduleMarkup(InlineKeyboardMarkup):
         self.row_width = 1
         for button in buttons:
             self.add(InlineKeyboardButton(text=unix_to_normalize(button[0]), callback_data=schedule.new(date=unix_to_normalize(button[0]))))
+            print(schedule.new(date=unix_to_normalize(button[0])))
         return self

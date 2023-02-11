@@ -7,8 +7,6 @@ from utils.fsm import MailingState, SchedulerState
 from service.admin.markup import AdminMarkup
 from utils.funcs import normalize_to_unix
 
-
-
 class Admin(object):
     def __init__(self, id, bot: Bot, driver):
         self.id = id
@@ -16,6 +14,9 @@ class Admin(object):
         self.user = UserRepos(driver)
         self.schedule = ScheduleRepos(driver)
         self.markup = AdminMarkup().register()
+
+    async def admin_panel(self, message:types.Message):
+        pass
     
     async def start_add_free_order(self, message: types.Message):
         await self.bot.send_message(message.from_user.id, "Введите дату, на которую можно записаться")

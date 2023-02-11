@@ -43,23 +43,18 @@ class UserRepos(Repos):
             raise e
 
 class ScheduleRepos(Repos):
-    def do_sub(self, date, id):
-        if self.cursor.execute(f"SELECT busyby from orders WHERE date = {date}")[0] == 0:
-            self.cursor.execute(f"UPDATE orders SET busyby = {id} WHERE date = {date}")
+    def do_sub(self, date, ident):
+        if self.cursor.execute(f"SELECT busyby from orders WHERE timestamp = {date}").fetchone()[0] == 0:
+            self.cursor.execute(f"UPDATE orders SET busyby = {ident} WHERE timestamp = {date}")
             self.conn.commit()
-            return True
-
-        return False
     
-    def get_free_order_list(self):
-        return self.cursor.execute(f"SELECT timestamp FROM orders WHERE busyby = 0")
+    def get_free_order_list(self, now):
+        return self.cursor.execute(f"SELECT timestamp FROM orders WHERE busyby = 0 AND timestamp >= {now}")
 
     def cancel_sub(self, date, id):
-        if self.cursor.execute(f"SELECT busyby from orders WHERE date = {date}")[0] == id:
-            self.cursor.execute(f"UPDATE orders SET busyby = 0 WHERE date = {date}")
+        if self.cursor.execute(f"SELECT busyby from orders WHERE timestamp = {date}")[0] == id:
+            self.cursor.execute(f"UPDATE orders SET busyby = 0 WHERE timestamp = {date}")
             self.conn.commit()
-            return True
-        return False
     
     def add_order(self, date):
         try:

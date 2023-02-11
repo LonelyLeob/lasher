@@ -8,3 +8,6 @@ class SchedulerState(StatesGroup):
 
 class MailingState(StatesGroup):
     mail_text = State()
+
+class SubbingState(StatesGroup):
+    agreement = State()
