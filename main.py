@@ -27,7 +27,7 @@ async def start(message: types.Message):
         await bot.send_message(message.from_user.id, f"Вы уже зарегистрированы, выберите запись на реснички:)", reply_markup=ClientMarkup().register())
         return
     await message.answer(f"Приветствую тебя {message.from_user.full_name}!\nЗдесь ты можешь записаться ко мне на реснички:)\nВведите реферальный код, если вас пригласил друг или /cancel, если вы просто хотите быть с нами;)")
-    await GuestState().reffer_code.set()
+    await GuestState().first()
 
 if __name__ == '__main__':
     Client(driver=driver, bot=bot, admin=admin, coord=coord).register_handlers_client(dp=dp)

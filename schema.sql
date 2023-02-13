@@ -3,17 +3,12 @@ CREATE TABLE IF NOT EXISTS users (
     name TEXT,
     surname TEXT,
     reffer_code TEXT unique,
-    reffer_quantity INTEGER
+    reffer_quantity INTEGER,
+    messaging_on BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     timestamp INTEGER unique,
     busyby INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS pricelist (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    price FLOAT
 );

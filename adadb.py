@@ -19,9 +19,9 @@ class Repos(object):
         self.cursor = self.conn.cursor()
 
 class UserRepos(Repos):
-    def create_user(self, id, name, surname, code):
+    def create_user(self, id, name, surname, code, agree):
         try:
-            self.cursor.execute(f"INSERT INTO users (tg_id, name, surname, reffer_code, reffer_quantity) VALUES ({id},'{name}','{surname}','{code}', 0)")
+            self.cursor.execute(f"INSERT INTO users (tg_id, name, surname, reffer_code, reffer_quantity, messaging_on) VALUES ({id},'{name}','{surname}','{code}', 0, {agree})")
             self.conn.commit()
         except Exception as e:
             print(f"Вызвана ошибка {e}")
@@ -29,7 +29,7 @@ class UserRepos(Repos):
     
     def get_all_users_id(self):
         try:
-            return self.cursor.execute(f"SELECT tg_id FROM users").fetchall()
+            return self.cursor.execute(f"SELECT tg_id FROM users WHERE messaging_on = 1").fetchall()
         except Exception as e:
             print(f"Вызвана ошибка {e}")
             raise e
@@ -38,6 +38,14 @@ class UserRepos(Repos):
     def profile(self, id:int):
         try:
             return self.cursor.execute(f"SELECT * FROM users WHERE tg_id = {id}").fetchone()
+        except Exception as e:
+            print(f"Вызвана ошибка {e}")
+            raise e
+    
+    def messaging(self, voice:str, id:int):
+        try:
+            self.cursor.execute(f"UPDATE users SET messaging_on = {voice} WHERE tg_id = {id}")
+            self.conn.commit()
         except Exception as e:
             print(f"Вызвана ошибка {e}")
             raise e
@@ -52,7 +60,7 @@ class ScheduleRepos(Repos):
         return self.cursor.execute(f"SELECT timestamp FROM orders WHERE busyby = 0 AND timestamp >= {now}")
 
     def cancel_sub(self, date, id):
-        if self.cursor.execute(f"SELECT busyby from orders WHERE timestamp = {date}")[0] == id:
+        if self.cursor.execute(f"SELECT busyby from orders WHERE timestamp = {date}").fetchone()[0] == id:
             self.cursor.execute(f"UPDATE orders SET busyby = 0 WHERE timestamp = {date}")
             self.conn.commit()
     
@@ -63,6 +71,20 @@ class ScheduleRepos(Repos):
         except Exception as e:
             print(f"Вызвана ошибка {e}")
             raise e
-
+    
+    def user_is_sub(self, date):
+        try:
+            return self.cursor.execute(f"SELECT busyby FROM orders WHERE timestamp = {date}").fetchone()[0]
+        except Exception as e:
+            print(f"Вызвана ошибка {e}")
+            raise e
+    
+    def delete_order(self, date):
+        try:
+            self.cursor.execute(f"DELETE FROM orders WHERE timestamp = {date}")
+        except Exception as e:
+            print(f"Вызвана ошибка {e}")
+            raise e
+            
 def user_exist(driver: sqlite3.Connection, id:int):
     return True if driver.cursor().execute(f"SELECT tg_id from users where tg_id = {id}").fetchone() != None else False
